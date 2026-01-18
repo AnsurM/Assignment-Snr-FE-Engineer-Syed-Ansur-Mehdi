@@ -22,11 +22,12 @@ import FieldRenderer from './FieldRenderer';
 const LivePreview = memo(function LivePreview() {
     const schema = useSchema();
     const { validateForm, getFormData, resetForm } = useFormRuntime();
-    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [submitStatus, setSubmitStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
     const [submittedData, setSubmittedData] = useState<string | null>(null);
 
     const handleSubmit = useCallback((e: React.FormEvent) => {
         e.preventDefault();
+        setSubmitStatus('submitting');
 
         const isValid = validateForm();
 
