@@ -1,73 +1,121 @@
-# React + TypeScript + Vite
+# Vanilla React Configurable Form Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A high-performance, accessible, and dependency-free form builder built with **React 19** and **TypeScript**. This project demonstrates advanced React patterns, strict domain isolation, and "Vanilla" mastery by avoiding external UI frameworks and state management libraries.
 
-Currently, two official plugins are available:
+![Project Status](https://img.shields.io/badge/Status-Complete-success)
+![Tech Stack](https://img.shields.io/badge/Stack-React_19_|_TypeScript_|_Vite-blue)
+![Style](https://img.shields.io/badge/Style-Pure_CSS_|_Modules-purple)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Project Overview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This application allows users to:
+1.  **Build Forms Interactively**: Add text, number, and nested group fields.
+2.  **Manage Structure**: Reorder, delete, and configure field properties (labels, validation).
+3.  **Live Preview**: Instantly test the form with real-time validation.
+4.  **Import/Export**: Save and load form schemas via JSON.
 
-## Expanding the ESLint configuration
+### Key Engineering Decisions
+*   **Zero Dependencies**: No Redux, Zustand, Formik, or Tailwind. Just pure React and CSS.
+*   **Domain Isolation**: Strict separation between the **Builder Domain** (Schema Tree) and **Runtime Domain** (User Input).
+*   **Performance First**: Heavy use of `React.memo`, structural sharing in reducers, and referential stability.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🛠️ Architecture & Concepts
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 1. Domain Isolation Strategy
+We separated the application into two distinct contexts to prevent unnecessary re-renders:
+*   **Builder Context**: Manages the `FormSchema` tree. Uses a **Recursive Reducer** pattern to handle deep updates immutably.
+*   **Runtime Context**: Manages `FormData` (user input). Uses an **Intelligent Merging** strategy to preserve user input even when the schema structure changes.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 2. Recursive Rendering
+Instead of flat lists, we use a true recursive component structure:
+*   `FormBuilderItem` renders itself for nested groups.
+*   `GroupRenderer` uses `<fieldset>` nesting to create semantic hierarchy.
+
+### 3. React 19 & Hooks Usage
+*   **`useReducer`**: For complex state logic in the Builder (Add/Move/Delete/Update).
+*   **`useContext`**: For dependency injection across the isolated domains.
+*   **`useMemo` & `useCallback`**: To ensure referential stability and prevent wasted renders in `React.memo` components.
+*   **`React.memo`**: Applied to all list items to ensure only changed fields re-render.
+
+---
+
+## 🎨 Styling & Accessibility (A11y)
+
+### Semantic HTML
+We prioritize semantic elements over generic `div` soup:
+*   **Groups**: Rendered as `<fieldset>` with `<legend>` for proper screen reader context.
+*   **Collapsibles**: Native `<details>` and `<summary>` elements for accessible interactions.
+*   **Forms**: Proper `<label>` association with inputs via `htmlFor`/`id`.
+*   **Landmarks**: `<aside>` for the sidebar, `<main>` for the preview area.
+
+### Pure CSS Architecture
+*   **Design Tokens**: CSS Variables (`--color-primary`, `--space-md`) for consistent theming.
+*   **Utility Classes**: A custom micro-framework (e.g., `.flex`, `.p-md`, `.card`) inspired by Tailwind but written from scratch.
+*   **Animations**: Subtle CSS transitions and `@keyframes` for a premium feel.
+*   **Focus Management**: Native focus outlines preserved for keyboard navigation.
+
+---
+
+## 📖 User Guide
+
+### Building a Form
+1.  **Add Fields**: Use the toolbar in the Left Sidebar to add **Text**, **Number**, or **Group** fields.
+2.  **Edit Properties**:
+    *   **Label**: Change the display name.
+    *   **Required**: Toggle validation.
+    *   **Min/Max**: Set constraints for number fields.
+3.  **Structure**:
+    *   Use **↑ / ↓** arrows to reorder fields.
+    *   Click the **▶** arrow to collapse/expand groups.
+
+### Exporting & Importing
+1.  Click **📤 Export JSON** to generate the schema.
+2.  Copy the JSON to save your form.
+3.  To load a form, click **📥 Import JSON**, paste your schema, and hit **Import**.
+
+### Live Preview
+*   The Right Panel shows the form as users will see it.
+*   **Validation**: Try submitting empty required fields to see error states.
+*   **Data Preservation**: Modify the form in the builder (e.g., change a label) and notice your typed data remains!
+
+---
+
+## 📂 Directory Structure
+
+```
+src/
+├── components/
+│   ├── builder/          # Schema management (Sidebar, Items)
+│   └── runtime/          # Form rendering (Preview, Renderers)
+├── context/
+│   ├── BuilderContext    # Schema state (useReducer)
+│   └── RuntimeContext    # Form data state (Intelligent Merging)
+├── styles/
+│   └── main.css          # CSS Variables & Utility classes
+├── types/
+│   └── schema.ts         # Single Source of Truth (TypeScript Interfaces)
+└── utils/
+    ├── recursiveReducer  # Immutable tree updates
+    └── dataMerging       # Schema-Data synchronization logic
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🏃‍♂️ Running Locally
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
+2.  **Start Dev Server**:
+    ```bash
+    npm run dev
+    ```
+3.  **Build for Production**:
+    ```bash
+    npm run build
+    ```
