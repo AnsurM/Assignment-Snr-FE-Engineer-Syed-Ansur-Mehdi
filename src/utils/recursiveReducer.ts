@@ -12,7 +12,7 @@
  * =============================================================================
  */
 
-import type { Field, FormSchema, GroupField } from '../types/schema';
+import type { Field, FormSchema } from '../types/schema';
 import { isGroupField } from '../types/schema';
 
 /**
