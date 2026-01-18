@@ -634,6 +634,10 @@ body {
 /* =============================================================================
    UTILITY CLASSES
    ============================================================================= */
+.block {
+    display: block;
+}
+
 .flex {
     display: flex;
 }
@@ -644,6 +648,10 @@ body {
 
 .flex-wrap {
     flex-wrap: wrap;
+}
+
+.flex-grow {
+    flex: 1;
 }
 
 .items-center {
@@ -688,6 +696,10 @@ body {
 
 .h-full {
     height: 100%;
+}
+
+.mt-xs {
+    margin-top: var(--space-xs);
 }
 
 .mt-sm {
