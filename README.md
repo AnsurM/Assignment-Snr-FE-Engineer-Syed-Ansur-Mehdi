@@ -5,6 +5,9 @@ A high-performance, accessible, and dependency-free form builder built with **Re
 ![Project Status](https://img.shields.io/badge/Status-Complete-success)
 ![Tech Stack](https://img.shields.io/badge/Stack-React_19_|_TypeScript_|_Vite-blue)
 ![Style](https://img.shields.io/badge/Style-Pure_CSS_|_Modules-purple)
+[![Live Demo](https://img.shields.io/badge/Demo-Live_App-success?style=for-the-badge&logo=github)](https://ansurm.github.io/Assignment-Snr-FE-Engineer-Syed-Ansur-Mehdi/)
+
+> **🔴 Live Demo:** [https://ansurm.github.io/Assignment-Snr-FE-Engineer-Syed-Ansur-Mehdi/](https://ansurm.github.io/Assignment-Snr-FE-Engineer-Syed-Ansur-Mehdi/)
 
 ---
 
