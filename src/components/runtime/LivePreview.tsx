@@ -70,16 +70,18 @@ const LivePreview = memo(function LivePreview() {
                 </div>
             ) : (
                 <form onSubmit={handleSubmit} className="preview-form" noValidate>
-                    {/* Form Fields */}
-                    <div className="flex flex-col gap-lg">
-                        {schema.fields.map((field) => (
-                            <FieldRenderer key={field.id} field={field} />
-                        ))}
-                    </div>
+                    <div className="card">
+                        {/* Form Fields */}
+                        <div className="card-body">
+                            <div className="flex flex-col gap-lg">
+                                {schema.fields.map((field) => (
+                                    <FieldRenderer key={field.id} field={field} />
+                                ))}
+                            </div>
+                        </div>
 
-                    {/* Form Actions */}
-                    <div className="card mt-xl">
-                        <div className="card-body bg-gray-50 flex justify-between items-center">
+                        {/* Form Actions */}
+                        <div className="card-footer flex justify-between items-center bg-gray-50">
                             <button
                                 type="button"
                                 className="btn btn-ghost text-danger"
