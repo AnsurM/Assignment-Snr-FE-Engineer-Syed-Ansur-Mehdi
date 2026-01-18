@@ -6,12 +6,13 @@
  *
  * LAYOUT: Flexbox split-screen view
  * - Builder Sidebar (Left) with independent scrolling
- * - Live Preview (Right) - placeholder until Phase 4
+ * - Live Preview (Right) - The actual runtime form
  * =============================================================================
  */
 
 import { BuilderProvider, FormRuntimeProvider } from './context';
 import { FormBuilderSidebar } from './components/builder';
+import { LivePreview } from './components/runtime';
 import './styles/main.css';
 
 function App() {
@@ -22,25 +23,9 @@ function App() {
           {/* Builder Domain - Left Sidebar */}
           <FormBuilderSidebar />
 
-          {/* Runtime Domain - Right Preview (Phase 4) */}
+          {/* Runtime Domain - Right Preview */}
           <main className="main-content">
-            <div className="preview-container">
-              <header className="preview-header">
-                <h2 className="preview-title">Live Preview</h2>
-                <p className="preview-subtitle">
-                  Your form will appear here as you build it
-                </p>
-              </header>
-
-              {/* Placeholder until Phase 4 */}
-              <div className="preview-empty">
-                <div className="preview-empty-icon">👁️</div>
-                <p className="font-medium">Preview Coming Soon</p>
-                <p className="text-sm text-muted mt-sm">
-                  Runtime components will be added in Phase 4
-                </p>
-              </div>
-            </div>
+            <LivePreview />
           </main>
         </div>
       </FormRuntimeProvider>

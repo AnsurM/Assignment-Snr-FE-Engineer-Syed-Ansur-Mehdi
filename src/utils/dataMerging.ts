@@ -19,7 +19,9 @@ import { isGroupField } from '../types/schema';
  * Runtime form data structure
  * Maps field IDs to their current values
  */
-export type FormData = Record<string, string | number | FormData>;
+export interface FormData {
+    [key: string]: string | number;
+}
 
 /**
  * Flattened form data for simpler access patterns
