@@ -35,6 +35,14 @@ const TextInput = memo(function TextInput({ field }: { field: TextField }) {
         [setValue]
     );
 
+    const handleBlur = useCallback(
+        // remove leading/trailing whitespace
+        (e: ChangeEvent<HTMLInputElement>) => {
+            setValue(e.target.value?.trim());
+        },
+        [setValue]
+    );
+
     return (
         <div className="input-group">
             <label
@@ -49,6 +57,7 @@ const TextInput = memo(function TextInput({ field }: { field: TextField }) {
                 className={`input ${error ? 'input--error' : ''}`}
                 value={value as string}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder={field.placeholder}
                 aria-invalid={!!error}
                 aria-describedby={error ? `${field.id}-error` : undefined}
@@ -75,6 +84,19 @@ const NumberInput = memo(function NumberInput({ field }: { field: NumberField })
         [setValue]
     );
 
+    const handleBlur = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            const val = e.target.value;
+            // Check for bad input
+            // If the browser reports badInput, we set a flag value that will fail validation
+            // Otherwise HTML number input doesn't report a problem here
+            if (val === '' && e.target.validity.badInput) {
+                setValue('__INVALID_NUMBER__');
+            }
+        },
+        [setValue]
+    );
+
     return (
         <div className="input-group">
             <label
@@ -89,6 +111,7 @@ const NumberInput = memo(function NumberInput({ field }: { field: NumberField })
                 className={`input ${error ? 'input--error' : ''}`}
                 value={value as string | number}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder={field.placeholder}
                 min={field.min}
                 max={field.max}
