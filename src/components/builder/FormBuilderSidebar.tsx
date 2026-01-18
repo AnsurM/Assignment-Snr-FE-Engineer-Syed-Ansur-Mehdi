@@ -97,7 +97,7 @@ const FormBuilderSidebar = memo(function FormBuilderSidebar() {
             {/* Header */}
             <header className="sidebar-header">
                 <h1 className="text-xl font-bold">Form Builder</h1>
-                <p className="text-sm text-muted mt-xs">Build your form by adding fields below</p>
+                <p className="text-sm mt-xs">Build your form by adding fields below</p>
             </header>
 
             {/* Scrollable content */}

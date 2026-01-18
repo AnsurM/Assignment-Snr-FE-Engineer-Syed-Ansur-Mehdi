@@ -21,6 +21,7 @@
     --color-primary: hsl(230, 85%, 60%);
     --color-primary-hover: hsl(230, 85%, 50%);
     --color-primary-light: hsl(230, 85%, 95%);
+    --color-cloudfront-primary: #1f87de;
 
     --color-secondary: hsl(280, 70%, 55%);
     --color-secondary-hover: hsl(280, 70%, 45%);
@@ -153,7 +154,7 @@ body {
 .sidebar-header {
     padding: var(--space-lg);
     border-bottom: 1px solid var(--color-border);
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    background: linear-gradient(135deg, var(--color-cloudfront-primary) 0%, var(--color-primary) 100%);
     color: var(--color-text-inverse);
 }
 
