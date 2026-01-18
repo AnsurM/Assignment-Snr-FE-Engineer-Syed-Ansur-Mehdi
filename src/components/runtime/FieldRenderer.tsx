@@ -43,6 +43,17 @@ const TextInput = memo(function TextInput({ field }: { field: TextField }) {
         [setValue]
     );
 
+    const handleKeyDown = useCallback(
+        (e: React.KeyboardEvent<HTMLInputElement>) => {
+            console.log(e.key);
+            if (e.key === 'Enter') {
+                const val = e.currentTarget.value;
+                setValue(val.trim());
+            }
+        },
+        [setValue]
+    );
+
     return (
         <div className="input-group">
             <label
@@ -58,6 +69,7 @@ const TextInput = memo(function TextInput({ field }: { field: TextField }) {
                 value={value as string}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                onKeyDown={handleKeyDown}
                 placeholder={field.placeholder}
                 aria-invalid={!!error}
                 aria-describedby={error ? `${field.id}-error` : undefined}
