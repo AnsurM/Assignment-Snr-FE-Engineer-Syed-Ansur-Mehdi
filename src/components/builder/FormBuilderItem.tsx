@@ -243,34 +243,38 @@ const FormBuilderItem = memo(function FormBuilderItem({
 
                 {/* Min/Max for number fields */}
                 {isNumber && (
-                    <div className="flex gap-md">
-                        <div className="input-group flex-grow">
-                            <label htmlFor={`${field.id}-min`} className="input-label">
-                                Min Value
-                            </label>
-                            <input
-                                id={`${field.id}-min`}
-                                type="number"
-                                className="input"
-                                value={field.min ?? ''}
-                                onChange={handleMinChange}
-                                placeholder="No min"
-                            />
+                    <>
+                        <div className="flex gap-md">
+                            <div className="input-group flex-grow">
+                                <label htmlFor={`${field.id}-min`} className="input-label">
+                                    Min Value
+                                </label>
+                                <input
+                                    id={`${field.id}-min`}
+                                    type="number"
+                                    className="input"
+                                    value={field.min ?? ''}
+                                    onChange={handleMinChange}
+                                    placeholder="No min"
+                                />
+                            </div>
                         </div>
-                        <div className="input-group flex-grow">
-                            <label htmlFor={`${field.id}-max`} className="input-label">
-                                Max Value
-                            </label>
-                            <input
-                                id={`${field.id}-max`}
-                                type="number"
-                                className="input"
-                                value={field.max ?? ''}
-                                onChange={handleMaxChange}
-                                placeholder="No max"
-                            />
+                        <div className="flex gap-md">
+                            <div className="input-group flex-grow">
+                                <label htmlFor={`${field.id}-max`} className="input-label">
+                                    Max Value
+                                </label>
+                                <input
+                                    id={`${field.id}-max`}
+                                    type="number"
+                                    className="input"
+                                    value={field.max ?? ''}
+                                    onChange={handleMaxChange}
+                                    placeholder="No max"
+                                />
+                            </div>
                         </div>
-                    </div>
+                    </>
                 )}
             </div>
 
