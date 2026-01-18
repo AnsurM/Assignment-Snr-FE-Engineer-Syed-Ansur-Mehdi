@@ -110,7 +110,7 @@ export function validateFormData(
 
         // Check required fields
         if (field.required) {
-            if (value === '' || value === undefined || value === null || value?.trim() === '') {
+            if (value === '' || value === undefined || value === null || typeof value === 'string' && value?.trim() === '') {
                 errors[field.id] = `${field.label} is required`;
                 return;
             }
