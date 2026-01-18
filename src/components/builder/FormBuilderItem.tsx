@@ -278,53 +278,64 @@ const FormBuilderItem = memo(function FormBuilderItem({
                 )}
             </div>
 
-            {/* Children for group fields - recursive rendering */}
+            {/* Children for group fields - collapsible with details/summary */}
             {isGroup && (
-                <div className="builder-item-children">
-                    {/* Toolbar to add children */}
-                    <div className="add-field-toolbar">
-                        <button
-                            type="button"
-                            className="btn btn-secondary btn-sm"
-                            onClick={() => handleAddChild('text')}
-                        >
-                            + Text
-                        </button>
-                        <button
-                            type="button"
-                            className="btn btn-secondary btn-sm"
-                            onClick={() => handleAddChild('number')}
-                        >
-                            + Number
-                        </button>
-                        <button
-                            type="button"
-                            className="btn btn-secondary btn-sm"
-                            onClick={() => handleAddChild('group')}
-                        >
-                            + Group
-                        </button>
-                    </div>
+                <details className="builder-item-details" open>
+                    <summary className="builder-item-summary">
+                        <span className="builder-item-summary-text">
+                            Nested Fields
+                            <span className="builder-item-summary-count">
+                                ({field.children.length} {field.children.length === 1 ? 'field' : 'fields'})
+                            </span>
+                        </span>
+                    </summary>
 
-                    {/* Render children recursively */}
-                    {field.children.length === 0 ? (
-                        <p className="text-muted text-sm p-md">
-                            No fields in this group. Add fields using the buttons above.
-                        </p>
-                    ) : (
-                        <div role="list" aria-label={`Fields in ${field.label}`}>
-                            {field.children.map((child, index) => (
-                                <FormBuilderItem
-                                    key={child.id}
-                                    field={child}
-                                    depth={depth + 1}
-                                    isFirst={index === 0}
-                                    isLast={index === field.children.length - 1}
-                                />
-                            ))}
+                    <div className="builder-item-children">
+                        {/* Toolbar to add children */}
+                        <div className="add-field-toolbar">
+                            <button
+                                type="button"
+                                className="btn btn-secondary btn-sm"
+                                onClick={() => handleAddChild('text')}
+                            >
+                                + Text
+                            </button>
+                            <button
+                                type="button"
+                                className="btn btn-secondary btn-sm"
+                                onClick={() => handleAddChild('number')}
+                            >
+                                + Number
+                            </button>
+                            <button
+                                type="button"
+                                className="btn btn-secondary btn-sm"
+                                onClick={() => handleAddChild('group')}
+                            >
+                                + Group
+                            </button>
                         </div>
-                    )}
-                </div>
+
+                        {/* Render children recursively */}
+                        {field.children.length === 0 ? (
+                            <p className="text-muted text-sm p-md">
+                                No fields in this group. Add fields using the buttons above.
+                            </p>
+                        ) : (
+                            <div role="list" aria-label={`Fields in ${field.label}`}>
+                                {field.children.map((child, index) => (
+                                    <FormBuilderItem
+                                        key={child.id}
+                                        field={child}
+                                        depth={depth + 1}
+                                        isFirst={index === 0}
+                                        isLast={index === field.children.length - 1}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </details>
             )}
         </div>
     );

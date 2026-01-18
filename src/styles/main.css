@@ -546,6 +546,64 @@ body {
     border-left: 2px solid var(--color-secondary);
 }
 
+/* Collapsible details/summary for groups */
+.builder-item-details {
+    margin-top: var(--space-md);
+    border-top: 1px dashed var(--color-border);
+}
+
+.builder-item-summary {
+    display: flex;
+    align-items: center;
+    padding: var(--space-sm) 0;
+    cursor: pointer;
+    user-select: none;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
+    list-style: none;
+}
+
+.builder-item-summary::-webkit-details-marker {
+    display: none;
+}
+
+.builder-item-summary::before {
+    content: '▶';
+    display: inline-block;
+    margin-right: var(--space-sm);
+    font-size: var(--font-size-xs);
+    transition: transform var(--transition-fast);
+}
+
+.builder-item-details[open]>.builder-item-summary::before {
+    transform: rotate(90deg);
+}
+
+.builder-item-summary:hover {
+    color: var(--color-primary);
+}
+
+.builder-item-summary-text {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.builder-item-summary-count {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-normal);
+    color: var(--color-text-muted);
+    background-color: var(--color-bg);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-full);
+}
+
+.builder-item-details .builder-item-children {
+    border-top: none;
+}
+
 /* =============================================================================
    ADD FIELD TOOLBAR
    ============================================================================= */
