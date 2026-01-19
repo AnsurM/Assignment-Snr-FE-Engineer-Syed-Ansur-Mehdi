@@ -44,6 +44,9 @@ Instead of flat lists, we use a true recursive component structure:
 *   **`useMemo` & `useCallback`**: To ensure referential stability and prevent wasted renders in `React.memo` components.
 *   **`React.memo`**: Applied to all list items to ensure only changed fields re-render.
 
+### 4. Performance Optimization
+*   **Input Debouncing**: Implemented a reusable `DebouncedInput` component for all text and number inputs. This ensures that rapid typing does not trigger expensive global state updates or validation checks on every keystroke, keeping the UI responsive even with large forms.
+
 ---
 
 ## 🎨 Styling & Accessibility (A11y)

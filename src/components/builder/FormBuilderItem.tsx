@@ -18,6 +18,7 @@ import { memo, type ChangeEvent } from 'react';
 import type { Field, FieldType } from '../../types/schema';
 import { isGroupField, isNumberField } from '../../types/schema';
 import { useBuilder } from '../../context/BuilderContext';
+import { DebouncedTextInput, DebouncedNumberInput } from '../ui/DebouncedInput';
 
 /**
  * Props for FormBuilderItem
@@ -60,44 +61,10 @@ const FormBuilderItem = memo(function FormBuilderItem({
     const { updateField, deleteField, moveField, addField } = useBuilder();
 
     /**
-     * Handle label change
-     */
-    const handleLabelChange = (e: ChangeEvent<HTMLInputElement>) => {
-        updateField(field.id, { label: e.target.value });
-    };
-
-    /**
-     * Handle required toggle
+     * Handle required toggle (Immediate update, no debounce needed)
      */
     const handleRequiredChange = (e: ChangeEvent<HTMLInputElement>) => {
         updateField(field.id, { required: e.target.checked });
-    };
-
-    /**
-     * Handle placeholder change (for text/number fields)
-     */
-    const handlePlaceholderChange = (e: ChangeEvent<HTMLInputElement>) => {
-        updateField(field.id, { placeholder: e.target.value });
-    };
-
-    /**
-     * Handle min value change (for number fields)
-     */
-    const handleMinChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        updateField(field.id, {
-            min: value === '' ? undefined : Number(value),
-        });
-    };
-
-    /**
-     * Handle max value change (for number fields)
-     */
-    const handleMaxChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        updateField(field.id, {
-            max: value === '' ? undefined : Number(value),
-        });
     };
 
     /**
@@ -182,12 +149,11 @@ const FormBuilderItem = memo(function FormBuilderItem({
                     <label htmlFor={`${field.id}-label`} className="input-label">
                         Label
                     </label>
-                    <input
+                    <DebouncedTextInput
                         id={`${field.id}-label`}
-                        type="text"
                         className="input"
                         value={field.label}
-                        onChange={handleLabelChange}
+                        onChange={(val) => updateField(field.id, { label: val })}
                         placeholder="Enter field label"
                     />
                 </div>
@@ -212,12 +178,11 @@ const FormBuilderItem = memo(function FormBuilderItem({
                         <label htmlFor={`${field.id}-placeholder`} className="input-label">
                             Placeholder
                         </label>
-                        <input
+                        <DebouncedTextInput
                             id={`${field.id}-placeholder`}
-                            type="text"
                             className="input"
                             value={'placeholder' in field ? field.placeholder || '' : ''}
-                            onChange={handlePlaceholderChange}
+                            onChange={(val) => updateField(field.id, { placeholder: val })}
                             placeholder="Enter placeholder text"
                         />
                     </div>
@@ -231,12 +196,11 @@ const FormBuilderItem = memo(function FormBuilderItem({
                                 <label htmlFor={`${field.id}-min`} className="input-label">
                                     Min Value
                                 </label>
-                                <input
+                                <DebouncedNumberInput
                                     id={`${field.id}-min`}
-                                    type="number"
                                     className="input"
-                                    value={field.min ?? ''}
-                                    onChange={handleMinChange}
+                                    value={field.min}
+                                    onChange={(val) => updateField(field.id, { min: typeof val === 'number' ? val : undefined })}
                                     placeholder="No min"
                                 />
                             </div>
@@ -246,12 +210,11 @@ const FormBuilderItem = memo(function FormBuilderItem({
                                 <label htmlFor={`${field.id}-max`} className="input-label">
                                     Max Value
                                 </label>
-                                <input
+                                <DebouncedNumberInput
                                     id={`${field.id}-max`}
-                                    type="number"
                                     className="input"
-                                    value={field.max ?? ''}
-                                    onChange={handleMaxChange}
+                                    value={field.max}
+                                    onChange={(val) => updateField(field.id, { max: typeof val === 'number' ? val : undefined })}
                                     placeholder="No max"
                                 />
                             </div>

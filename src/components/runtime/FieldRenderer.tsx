@@ -17,6 +17,7 @@ import type { Field, TextField, NumberField } from '../../types/schema';
 import { isGroupField, isNumberField } from '../../types/schema';
 import { useFieldValue } from '../../context/FormRuntimeContext';
 import GroupRenderer from './GroupRenderer';
+import { DebouncedTextInput, DebouncedNumberInput } from '../ui/DebouncedInput';
 
 interface FieldRendererProps {
     field: Field;
@@ -27,10 +28,6 @@ interface FieldRendererProps {
  */
 const TextInput = memo(function TextInput({ field }: { field: TextField }) {
     const [value, setValue, error] = useFieldValue(field.id);
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value);
-    };
 
     const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value.trim());
@@ -51,12 +48,11 @@ const TextInput = memo(function TextInput({ field }: { field: TextField }) {
             >
                 {field.label}
             </label>
-            <input
+            <DebouncedTextInput
                 id={field.id}
-                type="text"
                 className={`input ${error ? 'input--error' : ''}`}
                 value={value as string}
-                onChange={handleChange}
+                onChange={setValue}
                 onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
                 placeholder={field.placeholder}
@@ -78,17 +74,11 @@ const TextInput = memo(function TextInput({ field }: { field: TextField }) {
 const NumberInput = memo(function NumberInput({ field }: { field: NumberField }) {
     const [value, setValue, error] = useFieldValue(field.id);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value);
-    };
-
-    const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
-        const val = e.target.value;
-        // Check for bad input
-        // If the browser reports badInput, we set a flag value that will fail validation
-        // Otherwise HTML number input doesn't report a problem here
-        if (val === '' && e.target.validity.badInput) {
-            setValue('__INVALID_NUMBER__');
+    const handleChange = (val: number | string | undefined) => {
+        if (val === undefined) {
+            setValue('');
+        } else {
+            setValue(val);
         }
     };
 
@@ -100,13 +90,11 @@ const NumberInput = memo(function NumberInput({ field }: { field: NumberField })
             >
                 {field.label}
             </label>
-            <input
+            <DebouncedNumberInput
                 id={field.id}
-                type="number"
                 className={`input ${error ? 'input--error' : ''}`}
                 value={value as string | number}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 placeholder={field.placeholder}
                 min={field.min}
                 max={field.max}

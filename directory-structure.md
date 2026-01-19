@@ -7,6 +7,8 @@ src/
 │   │   ├── LivePreview.tsx           # Container for the form preview
 │   │   ├── FieldRenderer.tsx         # Dispatches rendering based on field type
 │   │   └── GroupRenderer.tsx         # Handles recursive group rendering
+│   ├── ui/
+│   │   └── DebouncedInput.tsx        # Reusable debounced input components
 ├── context/
 │   ├── BuilderContext.tsx            # Global state for Form Schema (Tree)
 │   └── FormRuntimeContext.tsx        # Local state for User Input (Key-Value)
