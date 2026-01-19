@@ -12,10 +12,10 @@
  * =============================================================================
  */
 
-import { memo, useCallback, type ChangeEvent } from 'react';
+import { memo, type ChangeEvent } from 'react';
 import type { Field, TextField, NumberField } from '../../types/schema';
 import { isGroupField, isNumberField } from '../../types/schema';
-import { useFieldValue } from '../../context';
+import { useFieldValue } from '../../context/FormRuntimeContext';
 import GroupRenderer from './GroupRenderer';
 
 interface FieldRendererProps {
@@ -28,31 +28,20 @@ interface FieldRendererProps {
 const TextInput = memo(function TextInput({ field }: { field: TextField }) {
     const [value, setValue, error] = useFieldValue(field.id);
 
-    const handleChange = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            setValue(e.target.value);
-        },
-        [setValue]
-    );
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue(e.target.value);
+    };
 
-    const handleBlur = useCallback(
-        // remove leading/trailing whitespace
-        (e: ChangeEvent<HTMLInputElement>) => {
-            setValue(e.target.value?.trim());
-        },
-        [setValue]
-    );
+    const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue(e.target.value.trim());
+    };
 
-    const handleKeyDown = useCallback(
-        (e: React.KeyboardEvent<HTMLInputElement>) => {
-            console.log(e.key);
-            if (e.key === 'Enter') {
-                const val = e.currentTarget.value;
-                setValue(val.trim());
-            }
-        },
-        [setValue]
-    );
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            const val = e.currentTarget.value;
+            setValue(val.trim());
+        }
+    };
 
     return (
         <div className="input-group">
@@ -89,25 +78,19 @@ const TextInput = memo(function TextInput({ field }: { field: TextField }) {
 const NumberInput = memo(function NumberInput({ field }: { field: NumberField }) {
     const [value, setValue, error] = useFieldValue(field.id);
 
-    const handleChange = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            setValue(e.target.value);
-        },
-        [setValue]
-    );
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue(e.target.value);
+    };
 
-    const handleBlur = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            const val = e.target.value;
-            // Check for bad input
-            // If the browser reports badInput, we set a flag value that will fail validation
-            // Otherwise HTML number input doesn't report a problem here
-            if (val === '' && e.target.validity.badInput) {
-                setValue('__INVALID_NUMBER__');
-            }
-        },
-        [setValue]
-    );
+    const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value;
+        // Check for bad input
+        // If the browser reports badInput, we set a flag value that will fail validation
+        // Otherwise HTML number input doesn't report a problem here
+        if (val === '' && e.target.validity.badInput) {
+            setValue('__INVALID_NUMBER__');
+        }
+    };
 
     return (
         <div className="input-group">

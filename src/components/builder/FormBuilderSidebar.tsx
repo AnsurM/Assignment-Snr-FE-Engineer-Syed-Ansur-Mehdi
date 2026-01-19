@@ -12,8 +12,8 @@
  * =============================================================================
  */
 
-import { useState, useCallback, type ChangeEvent, memo } from 'react';
-import { useBuilder } from '../../context';
+import { useState, type ChangeEvent, memo } from 'react';
+import { useBuilder } from '../../context/BuilderContext';
 import FormBuilderItem from './FormBuilderItem';
 
 /**
@@ -28,22 +28,22 @@ const FormBuilderSidebar = memo(function FormBuilderSidebar() {
     /**
      * Handle adding a root-level field
      */
-    const handleAddTextField = useCallback(() => {
+    const handleAddTextField = () => {
         addField('text', null);
-    }, [addField]);
+    };
 
-    const handleAddNumberField = useCallback(() => {
+    const handleAddNumberField = () => {
         addField('number', null);
-    }, [addField]);
+    };
 
-    const handleAddGroupField = useCallback(() => {
+    const handleAddGroupField = () => {
         addField('group', null);
-    }, [addField]);
+    };
 
     /**
      * Handle export - copies to clipboard and shows in textarea
      */
-    const handleExport = useCallback(() => {
+    const handleExport = () => {
         const json = exportSchema();
         setImportText(json);
         setShowImport(true);
@@ -52,23 +52,20 @@ const FormBuilderSidebar = memo(function FormBuilderSidebar() {
         navigator.clipboard.writeText(json).catch(() => {
             // Silently fail if clipboard access is denied
         });
-    }, [exportSchema]);
+    };
 
     /**
      * Handle import text change
      */
-    const handleImportTextChange = useCallback(
-        (e: ChangeEvent<HTMLTextAreaElement>) => {
-            setImportText(e.target.value);
-            setImportError(null);
-        },
-        []
-    );
+    const handleImportTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        setImportText(e.target.value);
+        setImportError(null);
+    };
 
     /**
      * Handle import action
      */
-    const handleImport = useCallback(() => {
+    const handleImport = () => {
         if (!importText.trim()) {
             setImportError('Please paste a valid JSON schema');
             return;
@@ -82,15 +79,15 @@ const FormBuilderSidebar = memo(function FormBuilderSidebar() {
         } else {
             setImportError('Invalid JSON format. Please check your schema.');
         }
-    }, [importText, importSchema]);
+    };
 
     /**
      * Toggle import section visibility
      */
-    const toggleImport = useCallback(() => {
+    const toggleImport = () => {
         setShowImport((prev) => !prev);
         setImportError(null);
-    }, []);
+    };
 
     return (
         <aside className="sidebar" aria-label="Form Builder">

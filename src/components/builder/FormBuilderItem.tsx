@@ -14,10 +14,10 @@
  * =============================================================================
  */
 
-import { memo, useCallback, type ChangeEvent } from 'react';
+import { memo, type ChangeEvent } from 'react';
 import type { Field, FieldType } from '../../types/schema';
 import { isGroupField, isNumberField } from '../../types/schema';
-import { useBuilder } from '../../context';
+import { useBuilder } from '../../context/BuilderContext';
 
 /**
  * Props for FormBuilderItem
@@ -62,89 +62,71 @@ const FormBuilderItem = memo(function FormBuilderItem({
     /**
      * Handle label change
      */
-    const handleLabelChange = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            updateField(field.id, { label: e.target.value });
-        },
-        [field.id, updateField]
-    );
+    const handleLabelChange = (e: ChangeEvent<HTMLInputElement>) => {
+        updateField(field.id, { label: e.target.value });
+    };
 
     /**
      * Handle required toggle
      */
-    const handleRequiredChange = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            updateField(field.id, { required: e.target.checked });
-        },
-        [field.id, updateField]
-    );
+    const handleRequiredChange = (e: ChangeEvent<HTMLInputElement>) => {
+        updateField(field.id, { required: e.target.checked });
+    };
 
     /**
      * Handle placeholder change (for text/number fields)
      */
-    const handlePlaceholderChange = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            updateField(field.id, { placeholder: e.target.value });
-        },
-        [field.id, updateField]
-    );
+    const handlePlaceholderChange = (e: ChangeEvent<HTMLInputElement>) => {
+        updateField(field.id, { placeholder: e.target.value });
+    };
 
     /**
      * Handle min value change (for number fields)
      */
-    const handleMinChange = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            const value = e.target.value;
-            updateField(field.id, {
-                min: value === '' ? undefined : Number(value),
-            });
-        },
-        [field.id, updateField]
-    );
+    const handleMinChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        updateField(field.id, {
+            min: value === '' ? undefined : Number(value),
+        });
+    };
 
     /**
      * Handle max value change (for number fields)
      */
-    const handleMaxChange = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            const value = e.target.value;
-            updateField(field.id, {
-                max: value === '' ? undefined : Number(value),
-            });
-        },
-        [field.id, updateField]
-    );
+    const handleMaxChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        updateField(field.id, {
+            max: value === '' ? undefined : Number(value),
+        });
+    };
 
     /**
      * Handle delete
      */
-    const handleDelete = useCallback(() => {
+    const handleDelete = () => {
         deleteField(field.id);
-    }, [field.id, deleteField]);
+    };
 
     /**
      * Handle move up
      */
-    const handleMoveUp = useCallback(() => {
+    const handleMoveUp = () => {
         moveField(field.id, 'up');
-    }, [field.id, moveField]);
+    };
 
     /**
      * Handle move down
      */
-    const handleMoveDown = useCallback(() => {
+    const handleMoveDown = () => {
         moveField(field.id, 'down');
-    }, [field.id, moveField]);
+    };
 
     /**
      * Handle adding child field to group
      */
-    const handleAddChild = useCallback(
-        (type: FieldType) => {
-            addField(type, field.id);
-        },
-        [field.id, addField]
-    );
+    const handleAddChild = (type: FieldType) => {
+        addField(type, field.id);
+    };
 
     const isGroup = isGroupField(field);
     const isNumber = isNumberField(field);

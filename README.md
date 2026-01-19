@@ -120,5 +120,23 @@ src/
     ```
 3.  **Build for Production**:
     ```bash
+    npm install
     npm run build
     ```
+
+---
+
+## 🚀 Future Implementations & Engineering Standards
+
+To ensure this project remains production-ready, maintainable, and follows industry standards, the following engineering practices and future enhancements are prioritized:
+
+### 🛠️ Professionalism & Tooling
+*   **Strict Type Safety**: Tightened TypeScript configuration (e.g., `noUncheckedIndexedAccess`, `noImplicitReturns`) to catch edge cases at compile-time.
+*   **Linting & Formatting**: Integrated **Prettier** and enhanced **ESLint** rules (using `strictTypeChecked`) to enforce consistent code style and prevent common pitfalls. This ensures the codebase is not just functional but also follows high-quality industry standards.
+*   **CI/CD Integration**: Future plans include GitHub Actions to automate linting, type-checking, and deployment on every push.
+
+### 📈 Scalability & Optimization
+*   **Advanced Focus Management**: Implementing more granular focus trapping for complex nested groups to enhance keyboard accessibility.
+*   **Dynamic Theming**: Expanding the CSS variable system to support full dark/light mode switching and custom brand themes.
+*   **Unit & Integration Testing**: Adding Vitest and React Testing Library to verify the recursive reducer logic and form validation states.
+

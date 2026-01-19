@@ -10,9 +10,10 @@
  * =============================================================================
  */
 
-import { BuilderProvider, FormRuntimeProvider } from './context';
-import { FormBuilderSidebar } from './components/builder';
-import { LivePreview } from './components/runtime';
+import { BuilderProvider } from './context/BuilderContext';
+import { FormRuntimeProvider } from './context/FormRuntimeContext';
+import FormBuilderSidebar from './components/builder/FormBuilderSidebar';
+import LivePreview from './components/runtime/LivePreview';
 import './styles/main.css';
 
 function App() {

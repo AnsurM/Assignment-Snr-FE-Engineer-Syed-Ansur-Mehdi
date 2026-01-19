@@ -88,18 +88,64 @@ export function mergeFormData(
 }
 
 /**
+ * Validates a required field
+ */
+function validateRequired(value: string | number | undefined | null, label: string): string | null {
+    const isActuallyEmpty = value === '' || value === undefined || value === null;
+    const isWhitespaceOnly = typeof value === 'string' && value.trim() === '';
+
+    if (isActuallyEmpty || isWhitespaceOnly) {
+        return `${label} is required`;
+    }
+    return null;
+}
+
+/**
+ * Validates a number field
+ */
+function validateNumber(
+    value: string | number | undefined | null,
+    field: { label: string; min?: number; max?: number }
+): string | null {
+    // Skip if empty (handled by validateRequired if needed)
+    if (value === '' || value === undefined || value === null) {
+        return null;
+    }
+
+    // Handle special sentinel for invalid browser input (e.g. "2.3e")
+    if (value === '__INVALID_NUMBER__') {
+        return `${field.label} must be a valid number`;
+    }
+
+    const numValue = Number(value);
+    const isNotANumber = isNaN(numValue);
+
+    if (isNotANumber) {
+        return `${field.label} must be a valid number`;
+    }
+
+    const isBelowMin = field.min !== undefined && numValue < field.min;
+    if (isBelowMin) {
+        return `${field.label} must be at least ${field.min}`;
+    }
+
+    const isAboveMax = field.max !== undefined && numValue > field.max;
+    if (isAboveMax) {
+        return `${field.label} must be at most ${field.max}`;
+    }
+
+    return null;
+}
+
+/**
  * Validates form data against a schema
  * Returns a map of field IDs to error messages
  */
-export function validateFormData(
-    data: FlatFormData,
-    fields: Field[]
-): Record<string, string> {
+export function validateFormData(data: FlatFormData, fields: Field[]): Record<string, string> {
     const errors: Record<string, string> = {};
 
     function validateField(field: Field): void {
         if (isGroupField(field)) {
-            // Recursively validate children
             for (const child of field.children) {
                 validateField(child);
             }
@@ -108,30 +154,20 @@ export function validateFormData(
 
         const value = data[field.id];
 
-        // Check required fields
+        // 1. Required validation
         if (field.required) {
-            if (value === '' || value === undefined || value === null || typeof value === 'string' && value?.trim() === '') {
-                errors[field.id] = `${field.label} is required`;
+            const requiredError = validateRequired(value, field.label);
+            if (requiredError) {
+                errors[field.id] = requiredError;
                 return;
             }
         }
 
-        // Type-specific validation
-        if (field.type === 'number' && value !== '') {
-            const numValue = Number(value);
-
-            if (isNaN(numValue)) {
-                errors[field.id] = `${field.label} must be a valid number`;
-                return;
-            }
-
-            if (field.min !== undefined && numValue < field.min) {
-                errors[field.id] = `${field.label} must be at least ${field.min}`;
-                return;
-            }
-
-            if (field.max !== undefined && numValue > field.max) {
-                errors[field.id] = `${field.label} must be at most ${field.max}`;
+        // 2. Type-specific validation
+        if (field.type === 'number') {
+            const numberError = validateNumber(value, field);
+            if (numberError) {
+                errors[field.id] = numberError;
                 return;
             }
         }

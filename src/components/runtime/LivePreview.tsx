@@ -13,7 +13,8 @@
  */
 
 import { memo, useCallback, useState } from 'react';
-import { useSchema, useFormRuntime } from '../../context';
+import { useSchema } from '../../context/BuilderContext';
+import { useFormRuntime } from '../../context/FormRuntimeContext';
 import FieldRenderer from './FieldRenderer';
 
 /**
