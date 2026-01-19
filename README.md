@@ -95,18 +95,26 @@ We prioritize semantic elements over generic `div` soup:
 ```
 src/
 ├── components/
-│   ├── builder/          # Schema management (Sidebar, Items)
-│   └── runtime/          # Form rendering (Preview, Renderers)
+│   ├── builder/
+│   │   ├── FormBuilderSidebar.tsx    # Parent container for configuration
+│   │   └── FormBuilderItem.tsx       # Individual field/group editor (Memoized)
+│   ├── runtime/
+│   │   ├── LivePreview.tsx           # Container for the form preview
+│   │   ├── FieldRenderer.tsx         # Dispatches rendering based on field type
+│   │   └── GroupRenderer.tsx         # Handles recursive group rendering
+│   ├── ui/
+│   │   └── DebouncedInput.tsx        # Reusable debounced input components
 ├── context/
-│   ├── BuilderContext    # Schema state (useReducer)
-│   └── RuntimeContext    # Form data state (Intelligent Merging)
+│   ├── BuilderContext.tsx            # Global state for Form Schema (Tree)
+│   └── FormRuntimeContext.tsx        # Local state for User Input (Key-Value)
 ├── styles/
-│   └── main.css          # CSS Variables & Utility classes
+│   └── main.css                      # Centralized Utility CSS & Layout
 ├── types/
-│   └── schema.ts         # Single Source of Truth (TypeScript Interfaces)
+│   └── schema.ts                     # TypeScript definitions for Fields and Data
 └── utils/
-    ├── recursiveReducer  # Immutable tree updates
-    └── dataMerging       # Schema-Data synchronization logic
+    ├── recursiveReducer.ts           # Logic for immutable tree updates
+    ├── dataMerging.ts                # Logic for intelligent schema/data sync
+    └── idGenerator.ts                # Logic for generating unique IDs
 ```
 
 ---
